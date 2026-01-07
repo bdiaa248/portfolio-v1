@@ -1,0 +1,174 @@
+/* استيراد الخطوط مباشرة لضمان ظهورها */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* ربط المتغيرات بأسماء الخطوط الجديدة */
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Space Mono", monospace;
+
+  --radius-sm: 0.75rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+
+@layer base {
+  /* 1. الوضع الفاتح (الدافئ) */
+  :root {
+    --background: oklch(0.985 0 0);
+    --foreground: oklch(0.14 0.01 270);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.14 0.01 270);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.14 0.01 270);
+    --primary: oklch(0.68 0.18 45); /* برتقالي دافئ */
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.96 0.01 270);
+    --secondary-foreground: oklch(0.14 0.01 270);
+    --muted: oklch(0.96 0.01 270);
+    --muted-foreground: oklch(0.55 0.01 90);
+    --accent: oklch(0.96 0.01 270);
+    --accent-foreground: oklch(0.14 0.01 270);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.92 0.01 270);
+    --input: oklch(0.92 0.01 270);
+    --ring: oklch(0.68 0.18 45);
+  }
+
+  /* 2. الوضع المظلم (الدافئ) */
+  .dark {
+    --background: oklch(0.08 0.01 270);
+    --foreground: oklch(0.88 0.01 90);
+    --card: oklch(0.11 0.01 270);
+    --card-foreground: oklch(0.88 0.01 90);
+    --popover: oklch(0.11 0.01 270);
+    --popover-foreground: oklch(0.88 0.01 90);
+    --primary: oklch(0.68 0.18 45); /* برتقالي دافئ */
+    --primary-foreground: oklch(0.08 0.01 270);
+    --secondary: oklch(0.14 0.01 270);
+    --secondary-foreground: oklch(0.88 0.01 90);
+    --muted: oklch(0.22 0.01 270);
+    --muted-foreground: oklch(0.55 0.01 90);
+    --accent: oklch(0.14 0.01 270);
+    --accent-foreground: oklch(0.68 0.18 45);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.88 0.01 90);
+    --border: oklch(0.18 0.01 270);
+    --input: oklch(0.18 0.01 270);
+    --ring: oklch(0.68 0.18 45);
+  }
+
+  /* 3. وضع ضياء شوشة (Diaa Theme - الأزرق) */
+  .diaa-theme {
+    --background: oklch(0.1 0.03 260); /* كحلي عميق */
+    --foreground: oklch(0.98 0 0);
+    --card: oklch(0.15 0.04 260);
+    --card-foreground: oklch(0.98 0 0);
+    --popover: oklch(0.15 0.04 260);
+    --popover-foreground: oklch(0.98 0 0);
+    --primary: oklch(0.6 0.22 260); /* أزرق اللوجو بتاعك */
+    --primary-foreground: oklch(0.98 0 0);
+    --secondary: oklch(0.2 0.05 260);
+    --secondary-foreground: oklch(0.98 0 0);
+    --muted: oklch(0.2 0.05 260);
+    --muted-foreground: oklch(0.7 0.04 260);
+    --accent: oklch(0.25 0.1 260);
+    --accent-foreground: oklch(0.98 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.3 0.08 260);
+    --input: oklch(0.3 0.08 260);
+    --ring: oklch(0.6 0.22 260);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    /* تطبيق الخط الأساسي */
+    @apply bg-background text-foreground font-sans;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+  
+  div, button, a, section, nav, header, footer, span, p, h1, h2, h3 {
+     transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 🔥 تأثير الزجاج الكريستالي المتوهج 🔥 */
+  .glass {
+    @apply bg-background/60 backdrop-blur-xl border border-white/10 shadow-lg;
+  }
+  
+  /* تحديث الكلاس ليكون فيه Glow عند الهوفر */
+  .glass-card {
+    @apply bg-card/20 backdrop-blur-md border border-white/5 shadow-lg transition-all duration-500 relative overflow-hidden;
+  }
+
+  /* تأثير الهوفر القوي: إطار يضيء + ظل ملون خلفي */
+  .glass-card:hover {
+    @apply border-primary/50 bg-card/30 -translate-y-1;
+    /* ظل ملون يعتمد على اللون الأساسي */
+    box-shadow: 0 0 40px -10px color-mix(in oklch, var(--primary), transparent 80%);
+  }
+
+  /* لمعة تمر فوق الكارت */
+  .glass-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
+    transition: 0.5s;
+    pointer-events: none;
+  }
+
+  .glass-card:hover::after {
+    left: 100%;
+    transition: 0.7s ease-in-out;
+  }
+}
