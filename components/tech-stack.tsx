@@ -1,207 +1,128 @@
 
 "use client"
 
-import { Database, BarChart3, Map, FileSpreadsheet, TrendingUp, Code } from "lucide-react"
+import { Database, BarChart3, Map, FileSpreadsheet, TrendingUp, Code, Brain, Terminal, Cpu } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { motion as motionBase } from "framer-motion"
-
-const motion = motionBase as any
+import { motion } from "framer-motion"
 
 export function TechStack() {
-  const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
-
-  const skills = [
+  const stackGroups = [
     {
-      name: "Python",
-      description: "Pandas, NumPy",
-      icon: Code,
-      brandColor: "#3776AB",
-      hoverColor: "#FFD43B",
+      title: "Intelligence & Logic",
+      icon: Brain,
+      items: [
+        { name: "Python", desc: "Pandas, ML, LLMs", icon: Code, color: "#3776AB" },
+        { name: "Prompt Eng.", desc: "System Design", icon: Terminal, color: "#4f7cff" }
+      ],
+      className: "md:col-span-2"
     },
     {
-      name: "SQL",
-      description: "Relational Databases",
+      title: "Data Engineering",
       icon: Database,
-      brandColor: "#336791",
-      hoverColor: "#4A90E2",
+      items: [
+        { name: "SQL", desc: "Architecture", icon: Database, color: "#336791" },
+        { name: "PostgreSQL", desc: "Storage", icon: Cpu, color: "#336791" }
+      ],
+      className: "md:col-span-1"
     },
     {
-      name: "Tableau",
-      description: "Data Storytelling",
-      icon: BarChart3,
-      brandColor: "#E97627",
-      hoverColor: "#FF8C42",
-    },
-    {
-      name: "ArcGIS / QGIS",
-      description: "Spatial Analysis",
-      icon: Map,
-      brandColor: "#00B2FF",
-      hoverColor: "#589632",
-    },
-    {
-      name: "Excel",
-      description: "Advanced Analysis",
-      icon: FileSpreadsheet,
-      brandColor: "#217346",
-      hoverColor: "#1D6F42",
-    },
-    {
-      name: "Data Visualization",
-      description: "Visual Analytics",
+      title: "Visualization",
       icon: TrendingUp,
-      brandColor: "#6366F1",
-      hoverColor: "#8B5CF6",
+      items: [
+        { name: "Tableau", desc: "Storytelling", icon: BarChart3, color: "#E97627" },
+        { name: "D3.js", desc: "Interactive", icon: Sparkles, color: "#F97316" }
+      ],
+      className: "md:col-span-1"
     },
-  ]
-
-  // Ensure ID is set on the ref element
-  useEffect(() => {
-    if (sectionRef.current) {
-      sectionRef.current.id = "tech-stack"
+    {
+      title: "Spatial Intelligence",
+      icon: Map,
+      items: [
+        { name: "ArcGIS", desc: "GIS Analysis", icon: Map, color: "#00B2FF" },
+        { name: "QGIS", desc: "Spatial Ops", icon: Map, color: "#589632" }
+      ],
+      className: "md:col-span-2"
+    },
+    {
+        title: "Analytics Core",
+        icon: FileSpreadsheet,
+        items: [
+          { name: "Excel", desc: "Deep Modeling", icon: FileSpreadsheet, color: "#217346" }
+        ],
+        className: "md:col-span-2"
     }
-  }, [])
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 20,
-        stiffness: 100,
-      },
-    },
-  }
+  ]
 
   return (
     <section
       ref={sectionRef}
       id="tech-stack"
-      data-section-id="tech-stack"
       className="py-40 px-6 lg:px-12"
     >
       <div className="max-w-7xl mx-auto">
-        <motion.div
-          className="mb-24 space-y-4"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          <motion.h2
-            className="text-4xl lg:text-5xl font-bold tracking-tight text-balance"
-            variants={itemVariants}
-          >
-            Tech Stack & <span className="text-primary">Tools</span>
-          </motion.h2>
-          <motion.p
-            className="text-lg text-muted-foreground max-w-2xl text-pretty"
-            variants={itemVariants}
-          >
-            Technologies and tools I use to transform data into insights and build analytical solutions.
-          </motion.p>
-        </motion.div>
+        <div className="mb-24 space-y-4">
+          <h2 className="text-4xl lg:text-6xl font-black tracking-tight">
+            The <span className="text-primary">Ecosystem.</span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            A specialized stack curated for data intelligence and engineering scale.
+          </p>
+        </div>
 
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          {skills.map((skill, index) => {
-            const Icon = skill.icon
-            return (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.02, y: -5 }}
-                transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                // Glass card class here
-                className="glass-card group relative overflow-hidden rounded-xl p-6"
-              >
-                <div className="flex flex-col items-start space-y-4">
-                  <motion.div
-                    className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-all duration-500 border border-white/10"
-                    whileHover={{ scale: 1.1 }}
-                    style={{
-                      boxShadow: "0 0 0 rgba(0,0,0,0)",
-                    }}
-                  >
-                    <motion.div
-                      whileHover={{ y: -5 }}
-                      transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                    >
-                      <Icon
-                        className="w-7 h-7 transition-all duration-500"
-                        style={{
-                          color: "rgb(161 161 170)",
-                          filter: "grayscale(100%)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.filter = "grayscale(0%)"
-                          e.currentTarget.style.color = skill.brandColor
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.filter = "grayscale(100%)"
-                          e.currentTarget.style.color = "rgb(161 161 170)"
-                        }}
-                      />
-                    </motion.div>
-                  </motion.div>
-                  <div className="space-y-1">
-                    <h3 className="text-xl font-semibold group-hover:text-primary transition-colors duration-500">
-                      {skill.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{skill.description}</p>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {stackGroups.map((group, gIdx) => (
+            <div key={gIdx} className={group.className}>
+              <div className="glass-card p-8 rounded-[2rem] h-full border-white/5 hover:border-primary/20 transition-all flex flex-col gap-8">
+                <div className="flex items-center justify-between">
+                    <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-primary">
+                        <group.icon className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">{group.title}</span>
                 </div>
 
-                {/* Subtle glow effect on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                  <div
-                    className="absolute inset-0 bg-gradient-to-br from-[var(--brand-color)]/5 via-transparent to-transparent"
-                    style={{
-                      background: `linear-gradient(to bottom right, ${skill.brandColor}08, transparent)`,
-                    }}
-                  />
+                <div className="space-y-6">
+                    {group.items.map((skill, sIdx) => (
+                        <div key={sIdx} className="group/skill flex items-center gap-4">
+                            <div className="size-12 rounded-xl bg-zinc-900 border border-white/5 flex items-center justify-center transition-all group-hover/skill:scale-110 group-hover/skill:border-primary/40">
+                                <skill.icon className="w-5 h-5 text-zinc-400 group-hover/skill:text-primary" />
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-zinc-200 group-hover/skill:text-white transition-colors">{skill.name}</h4>
+                                <p className="text-xs text-zinc-500 font-mono">{skill.desc}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-              </motion.div>
-            )
-          })}
-        </motion.div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
 }
+
+function Sparkles(props: any) {
+    return (
+      <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+        <path d="M5 3v4" />
+        <path d="M19 17v4" />
+        <path d="M3 5h4" />
+        <path d="M17 19h4" />
+      </svg>
+    )
+  }

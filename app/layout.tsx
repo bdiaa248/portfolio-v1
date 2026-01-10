@@ -8,11 +8,13 @@ import { MouseSpotlight } from "@/components/MouseSpotlight"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Preloader } from "@/components/preloader"
+import { NeuralBackground } from "@/components/NeuralBackground"
+import { ScriptedBot } from "@/components/scripted-bot"
 
 export const metadata: Metadata = {
-  title: "AI Engineer & Tech Creator | Portfolio",
+  title: "Diaa Shousha | Data Scientist & AI Engineer",
   description:
-    "Crafting intelligent systems and innovative digital experiences. Specializing in AI, ML, and full-stack development.",
+    "Crafting intelligent systems and innovative digital experiences. Specializing in AI, ML, and data-driven solutions.",
   generator: "v0.app",
   icons: {
     icon: [
@@ -41,7 +43,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`antialiased bg-background text-foreground transition-colors duration-500`}
+        className={`antialiased bg-background text-foreground transition-colors duration-500 relative`}
       >
         <ThemeProvider
           attribute="class"
@@ -49,14 +51,21 @@ export default function RootLayout({
           enableSystem
           themes={["light", "dark", "diaa-theme"]}
         >
-          {/* 👇 الـ Preloader في الأول خالص عشان يظهر قبل أي حاجة */}
           <Preloader />
+          
+          {/* Living Background */}
+          <NeuralBackground />
           
           <MouseSpotlight />
           
           <SmoothScroll>
-            {children}
+            <div className="relative z-10">
+              {children}
+            </div>
           </SmoothScroll>
+          
+          {/* Scripted Intelligence Proxy */}
+          <ScriptedBot />
           
           <Analytics />
           

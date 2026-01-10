@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const DB_PATH = path.join(process.cwd(), 'data');
+const DB_PATH = path.join((process as any).cwd(), 'data');
 const DB_FILE = path.join(DB_PATH, 'portfolio.json');
 
 // Initial State

@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { addProject, updateProject, deleteProject, uploadImage } from "@/app/actions/admin"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -121,7 +121,7 @@ export function ProjectManager({ projects }: { projects: any[] }) {
                     name="description" 
                     defaultValue={editingProject?.description || ''} 
                     placeholder="Project details..." 
-                    className="bg-background/50 min-h-[100px]" 
+                    className="bg-background/50" 
                     required 
                 />
               </div>

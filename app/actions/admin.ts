@@ -3,6 +3,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
+import { Buffer } from "buffer";
 
 // Helper to create an admin client specifically for server actions
 const getSupabaseAdmin = () => {

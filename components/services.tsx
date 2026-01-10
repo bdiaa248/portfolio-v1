@@ -2,8 +2,9 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { BarChart3, Database, FileText, Video } from "lucide-react"
+import { BarChart3, Database, FileText, Video, BrainCircuit, Sparkles } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 
 export function Services() {
   const [isVisible, setIsVisible] = useState(false)
@@ -28,29 +29,36 @@ export function Services() {
 
   const services = [
     {
+      icon: BrainCircuit,
+      title: "AI Engineering",
+      description: "Building intelligent systems with LLMs and custom ML models. Bridging the gap between theory and production-ready AI tools.",
+      className: "md:col-span-2 md:row-span-2 bg-primary/5 border-primary/20",
+      highlight: true
+    },
+    {
       icon: BarChart3,
       title: "Data Analysis",
-      description:
-        "Extracting patterns from complex datasets. Identifying trends and building insights that inform business decisions. Focus on clarity and actionable recommendations.",
+      description: "Extracting patterns from complex datasets and building actionable business insights.",
+      className: "md:col-span-2",
     },
     {
       icon: Database,
-      title: "Business Analytics",
-      description:
-        "Connecting data to real-world problems. Experience analyzing customer behavior, revenue drivers, and operational efficiency with a focus on measurable impact.",
-    },
-    {
-      icon: FileText,
-      title: "Technical Communication",
-      description:
-        "Explaining complex concepts in plain language. Bridging the gap between technical findings and stakeholder understanding. Making data accessible.",
+      title: "Business Intelligence",
+      description: "Connecting raw data to strategic decision-making with high-impact dashboards.",
+      className: "md:col-span-1",
     },
     {
       icon: Video,
-      title: "Content Creation",
-      description:
-        "Teaching programming and technical concepts through video content. Sharing what I learn while building projects. Focused on clarity over production value.",
+      title: "Tech Creation",
+      description: "Sharing knowledge through video, breaking down complex engineering topics for the community.",
+      className: "md:col-span-1",
     },
+    {
+      icon: FileText,
+      title: "Technical Writing",
+      description: "Documenting systems and making data findings accessible to all stakeholders.",
+      className: "md:col-span-2",
+    }
   ]
 
   return (
@@ -63,30 +71,57 @@ export function Services() {
     >
       <div className="max-w-7xl mx-auto">
         <div className="mb-24 space-y-4">
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-balance">
-            What I <span className="text-primary">Do</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-4">
+             <Sparkles className="w-3 h-3" /> Core Capabilities
+          </div>
+          <h2 className="text-4xl lg:text-6xl font-black tracking-tight text-balance">
+            Expertise <span className="text-primary">&</span> Solutions
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl text-pretty">
-            Skills built through consistent practice and applied to real problems.
+            Advanced technical skillsets combined to solve modern business complexities.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        {/* BENTO GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {services.map((service, index) => {
             const Icon = service.icon
             return (
-              <Card
+              <motion.div
                 key={index}
-                className="glass-card group p-10 cursor-pointer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={service.className}
               >
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-all duration-700 group-hover:shadow-[0_0_20px_rgba(242,138,73,0.2)] border border-primary/10">
-                  <Icon className="w-7 h-7 text-primary" />
-                </div>
-                <h3 className="text-2xl font-semibold mb-4 group-hover:text-primary transition-colors duration-500">
-                  {service.title}
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">{service.description}</p>
-              </Card>
+                <Card
+                  className="glass-card group h-full p-8 md:p-10 cursor-pointer flex flex-col justify-between overflow-hidden relative"
+                >
+                  {service.highlight && (
+                     <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <BrainCircuit className="size-32" />
+                     </div>
+                  )}
+                  
+                  <div>
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-black transition-all duration-500 border border-primary/10">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className={`font-bold mb-4 group-hover:text-primary transition-colors duration-500 ${service.highlight ? "text-3xl" : "text-xl"}`}>
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed text-sm lg:text-base">
+                        {service.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex items-center gap-2 text-[10px] font-bold text-zinc-500 group-hover:text-white transition-colors uppercase tracking-widest">
+                    <span>Explore Methodology</span>
+                    <div className="h-px flex-1 bg-white/5 group-hover:bg-primary/40 transition-colors" />
+                  </div>
+                </Card>
+              </motion.div>
             )
           })}
         </div>

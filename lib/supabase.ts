@@ -1,13 +1,18 @@
 
 import { createClient } from '@supabase/supabase-js'
 
+// استخدمنا رابط مشروعك الفعلي كـ fallback لمنع خطأ "fetch failed"
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://lbxoiufieyvjqotlkpto.supabase.co'
-// Use a placeholder if key is missing to prevent crash during initialization
-// The app will load, but DB requests will fail until the real key is added to .env
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'kp_placeholder_key_to_prevent_crash'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-if (supabaseKey === 'kp_placeholder_key_to_prevent_crash') {
-  console.warn('⚠️ WARNING: Missing Supabase Key. Database operations will fail until NEXT_PUBLIC_SUPABASE_ANON_KEY is set.')
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  console.warn(
+    '⚠️ Supabase environment variables are partially or fully missing! ' +
+    'Please check your .env file or deployment settings.'
+  )
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(
+  supabaseUrl, 
+  supabaseAnonKey || 'placeholder-key'
+)

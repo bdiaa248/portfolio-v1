@@ -1,27 +1,57 @@
 
 "use client"
 
-import { Home, Briefcase, Code, Route, Award, Layers, Mail } from "lucide-react"
+import { Home, Briefcase, Code, Route, Award, Layers, Mail, Linkedin, Github, Youtube } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
+import { motion, useMotionValue, useSpring } from "framer-motion"
 import { GhostModal } from "@/components/admin-ghost-modal"
+
+function MagneticIcon({ children, href, label }: { children: React.ReactNode, href: string, label: string }) {
+    const mouseX = useMotionValue(0)
+    const mouseY = useMotionValue(0)
+    const springX = useSpring(mouseX, { stiffness: 150, damping: 15 })
+    const springY = useSpring(mouseY, { stiffness: 150, damping: 15 })
+
+    function handleMouseMove(e: React.MouseEvent) {
+        const rect = e.currentTarget.getBoundingClientRect()
+        const centerX = rect.left + rect.width / 2
+        const centerY = rect.top + rect.height / 2
+        mouseX.set((e.clientX - centerX) * 0.4)
+        mouseY.set((e.clientY - centerY) * 0.4)
+    }
+
+    function handleMouseLeave() {
+        mouseX.set(0)
+        mouseY.set(0)
+    }
+
+    return (
+        <motion.a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={label}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ x: springX, y: springY }}
+            className="p-3 rounded-xl hover:bg-primary/20 text-muted-foreground hover:text-primary transition-colors duration-300"
+        >
+            {children}
+        </motion.a>
+    )
+}
 
 export function Sidebar() {
   const [activeSection, setActiveSection] = useState("home")
   const sectionRatiosRef = useRef<Map<string, number>>(new Map())
-  
-  // Ghost Trigger State
   const [clickCount, setClickCount] = useState(0)
   const [isGhostModalOpen, setIsGhostModalOpen] = useState(false)
-  const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const clickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Ghost Trigger Logic
   const handleLogoClick = () => {
     setClickCount(prev => prev + 1)
-    
-    // Reset count if user stops clicking for 2 seconds
     if (clickTimeoutRef.current) clearTimeout(clickTimeoutRef.current)
     clickTimeoutRef.current = setTimeout(() => setClickCount(0), 2000)
-
     if (clickCount + 1 >= 5) {
       setIsGhostModalOpen(true)
       setClickCount(0)
@@ -38,69 +68,32 @@ export function Sidebar() {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         const element = entry.target as HTMLElement
-        let id = element.id || element.getAttribute("id") || ""
-        
-        if (!id) {
-          id = element.getAttribute("data-section-id") || ""
-        }
-        
-        if (id && typeof id === "string" && id.trim().length > 0) {
-          id = id.trim()
-          
-          if (entry.isIntersecting) {
-            sectionRatiosRef.current.set(id, entry.intersectionRatio)
-          } else {
-            sectionRatiosRef.current.delete(id)
-          }
+        let id = element.id || ""
+        if (entry.isIntersecting) {
+          sectionRatiosRef.current.set(id, entry.intersectionRatio)
+        } else {
+          sectionRatiosRef.current.delete(id)
         }
       })
 
       let maxRatio = 0
       let activeId = "home"
-
       sectionRatiosRef.current.forEach((ratio, id) => {
-        if (ratio > maxRatio && id && id.trim().length > 0) {
+        if (ratio > maxRatio) {
           maxRatio = ratio
-          activeId = id.trim()
+          activeId = id
         }
       })
-
-      if (maxRatio > 0 && activeId) {
-        setActiveSection(activeId)
-      }
+      if (maxRatio > 0) setActiveSection(activeId)
     }
 
     const observer = new IntersectionObserver(observerCallback, observerOptions)
-
     const sections = ["home", "services", "projects", "journey", "certifications", "tech-stack", "contact"]
-    
-    const observeSections = () => {
-      sections.forEach((id) => {
-        const element = document.getElementById(id)
-        if (element) {
-          if (element.id !== id) {
-            element.id = id
-          }
-          observer.observe(element)
-        }
-      })
-    }
-
-    observeSections()
-
-    const timeoutId1 = setTimeout(() => {
-      observeSections()
-    }, 100)
-    
-    const timeoutId2 = setTimeout(() => {
-      observeSections()
-    }, 500)
-
-    return () => {
-      clearTimeout(timeoutId1)
-      clearTimeout(timeoutId2)
-      observer.disconnect()
-    }
+    sections.forEach((id) => {
+      const element = document.getElementById(id)
+      if (element) observer.observe(element)
+    })
+    return () => observer.disconnect()
   }, [])
 
   const navItems = [
@@ -115,9 +108,7 @@ export function Sidebar() {
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
+    if (element) element.scrollIntoView({ behavior: "smooth" })
   }
 
   return (
@@ -129,11 +120,11 @@ export function Sidebar() {
           <div 
             className="flex items-center justify-center lg:justify-start w-full cursor-pointer select-none"
             onClick={handleLogoClick}
+            role="button"
           >
-            <span className="text-2xl font-extrabold tracking-tighter text-primary transition-colors duration-500">DS.</span>
-            <span className="hidden lg:block ml-3 text-lg font-semibold">Portfolio</span>
+            <span className="text-2xl font-extrabold tracking-tighter text-primary">DS.</span>
+            <span className="hidden lg:block ml-3 text-lg font-semibold uppercase tracking-tighter">Shousha</span>
           </div>
-          <span className="hidden lg:block text-sm text-muted-foreground">Abdelrahman Diaa</span>
         </div>
 
         <nav className="flex-1 w-full space-y-2">
@@ -147,41 +138,30 @@ export function Sidebar() {
                 className={`w-full flex items-center justify-center lg:justify-start px-4 py-3 rounded-xl transition-all duration-700 group ${
                   isActive
                     ? "bg-primary/20 text-primary shadow-[0_0_20px] shadow-primary/20 backdrop-blur-sm"
-                    : "text-muted-foreground hover:bg-white/5 hover:text-foreground hover:-translate-y-0.5"
+                    : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
                 }`}
               >
-                <Icon className={`w-5 h-5 transition-colors duration-500 ${isActive ? "text-primary" : "group-hover:text-primary"}`} />
-                <span className="hidden lg:block ml-3 text-sm font-medium">{item.label}</span>
+                <Icon className={`size-5 ${isActive ? "text-primary" : "group-hover:text-primary"}`} />
+                <span className="hidden lg:block ml-3 text-xs font-bold uppercase tracking-widest">{item.label}</span>
               </button>
             )
           })}
         </nav>
 
-        <div className="hidden lg:flex flex-col items-start w-full space-y-3 text-xs text-muted-foreground">
-          <a
-            href="https://www.linkedin.com/in/abdelrahman-diaa"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-primary hover:opacity-70 transition-all duration-500 hover:translate-x-1"
-          >
-            LinkedIn
-          </a>
-          <a
-            href="https://github.com/AbdelrahmanDiaa"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-primary hover:opacity-70 transition-all duration-500 hover:translate-x-1"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.youtube.com/@DiaaShousha"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-primary hover:opacity-70 transition-all duration-500 hover:translate-x-1"
-          >
-            YouTube
-          </a>
+        {/* --- MAGNETIC DOCK --- */}
+        <div className="mt-auto flex flex-col items-center lg:items-start w-full gap-2 border-t border-white/5 pt-6">
+            <span className="hidden lg:block text-[9px] font-mono text-zinc-600 uppercase tracking-[0.3em] mb-2 px-4">Social Uplinks</span>
+            <div className="flex flex-col lg:flex-row items-center gap-1">
+                <MagneticIcon href="https://www.linkedin.com/in/abdelrahman-diaa-080496334/" label="LinkedIn">
+                    <Linkedin className="size-5" />
+                </MagneticIcon>
+                <MagneticIcon href="https://github.com/AbdelrahmanDiaa" label="GitHub">
+                    <Github className="size-5" />
+                </MagneticIcon>
+                <MagneticIcon href="https://www.youtube.com/@DiaaShousha" label="YouTube">
+                    <Youtube className="size-5" />
+                </MagneticIcon>
+            </div>
         </div>
       </aside>
     </>
