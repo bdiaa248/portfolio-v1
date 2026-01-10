@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "Crafting intelligent systems and innovative digital experiences. Specializing in AI, ML, and data-driven solutions.",
   generator: "v0.app",
   verification: {
-    google: "Gh_DeBUfey_Pb4Q1CxCVV29BtLH4mICwK4pbOXslDl0",
+    google: "PB16b2DPG-VzjPWv-SSm2XszwIuURxZrUPXceTl9Tcc",
   },
   icons: {
     icon: [
