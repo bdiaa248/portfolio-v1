@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   title: "Diaa Shousha | Data Scientist & AI Engineer",
   description:
     "Crafting intelligent systems and innovative digital experiences. Specializing in AI, ML, and data-driven solutions.",
+  generator: "v0.app",
   verification: {
     google: "Gh_DeBUfey_Pb4Q1CxCVV29BtLH4mICwK4pbOXslDl0",
   },
